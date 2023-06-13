@@ -187,15 +187,6 @@
       "image": "../Photos/Mojito.jpg",
       "category": "Drink",
       "quantity": 0
-    },
-    {
-      "id": 22,
-      "name": "Mojito",
-      "description": "Refreshing cocktail made with rum, lime juice, mint leaves, and soda water.",
-      "price": 7.99,
-      "image": "../Photos/Mojito.jpg",
-      "category": "Drink",
-      "quantity": 0
     }
   ]
   
