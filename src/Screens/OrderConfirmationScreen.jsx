@@ -8,7 +8,7 @@ const OrderConfirmationScreen = ({ route, navigation }) => {
   const calculateTotal = () => {
     let total = 0;
     order.forEach(dish => {
-      total += dish.price;
+      total += dish.price * (dish.quantity ? dish.quantity : 1);
     });
     return total;
   };
@@ -20,7 +20,7 @@ const OrderConfirmationScreen = ({ route, navigation }) => {
         <View key={dish.id} style={styles.dishContainer}>
           <Text style={styles.dishName}>{dish.name}</Text>
           <Text style={styles.dishDescription}>{dish.description}</Text>
-          <Text style={styles.dishPrice}>{dish.price}</Text>
+          <Text style={styles.dishPrice}>{dish.price * dish.quantity} (Qty: {dish.quantity} X {dish.price})</Text>
         </View>
       ))}
       <Text style={styles.total}>Total: {calculateTotal()}</Text>
