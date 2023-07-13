@@ -1,7 +1,12 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import React, { useMemo } from 'react';
+import { View, Text, Image, StyleSheet, Button, Pressable } from 'react-native';
 
-const Dish = ({ dish, addToOrder }) => {
+const Dish = ({ dish, addToOrder, removeFromOrder, cartItems }) => {
+
+  const existingItem = useMemo(() => {
+    return cartItems.find((item) => item.id === dish.id);
+  }, [cartItems]);
+
   return (
     <View style={styles.container}>
       <Image source={dish.image} style={styles.image} resizeMode="cover" />
@@ -9,6 +14,18 @@ const Dish = ({ dish, addToOrder }) => {
         <Text style={styles.name}>{dish.name}</Text>
         <Text style={styles.description}>{dish.description}</Text>
         <Text style={styles.price}>Price: ${dish.price.toFixed(2)}</Text>
+        {!existingItem ? <Button title={`Add to cart`} onPress={() => addToOrder(dish)} /> : <View style={styles.quantity}>
+          <Text style={styles.quantityText}>Qty:</Text>
+          <View style={styles.quantityBtnPanel}>
+            <Pressable style={styles.quantityBtn} onPress={() => removeFromOrder(dish.id)}>
+              <Text style={styles.quantityBtntext}>{'-'}</Text>
+            </Pressable>
+            <Text style={styles.quantityText}>{`${existingItem.quantity}`}</Text>
+            <Pressable style={styles.quantityBtn} onPress={() => addToOrder(dish)}>
+              <Text style={styles.quantityBtntext}>{'+'}</Text>
+            </Pressable>
+          </View>
+        </View>}
       </View>
     </View>
   );
@@ -41,6 +58,36 @@ const styles = StyleSheet.create({
   },
   price: {
     fontWeight: 'bold',
+  },
+  quantity: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between'
+  },
+  quantityBtnPanel: {
+    flexDirection: 'row',
+  },
+  quantityText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    alignSelf:'center'
+  },
+  quantityBtn: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 80,
+    elevation: 3,
+    marginHorizontal: 5,
+    backgroundColor: 'grey',
+  },
+  quantityBtntext: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
   },
 });
 

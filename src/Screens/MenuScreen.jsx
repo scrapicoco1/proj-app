@@ -4,23 +4,21 @@ import Dish from '../Components/Dish';
 
 const MenuScreen = ({ navigation }) => {
   const [cartItems, setCartItems] = useState([]);
-
   const addToOrder = (dish) => {
-    const existingDish = order.find((item) => item.id === dish.id);
-  
+    const existingDish = cartItems.find((item) => item.id === dish.id);
     if (existingDish) {
-      const updatedOrder = order.map((item) => {
+      const updatedCart = cartItems.map((item) => {
         if (item.id === dish.id) {
           return { ...item, quantity: item.quantity + 1 };
         }
         return item;
       });
-      setOrder(updatedOrder);
+      setCartItems(updatedCart);
     } else {
-      setOrder([...order, { ...dish, quantity: 1 }]);
+      setCartItems([...cartItems, { ...dish, quantity: 1 }]);
     }
   };
-  
+
 
   const updateQuantity = (dishId, quantity) => {
     const updatedOrder = cartItems.map((dish) => {
@@ -33,8 +31,21 @@ const MenuScreen = ({ navigation }) => {
   };
 
   const removeFromOrder = (dishId) => {
-    const updatedOrder = cartItems.filter((dish) => dish.id !== dishId);
-    setCartItems(updatedOrder);
+    const existingDish = cartItems.find((item) => item.id === dishId);
+    if (existingDish) {
+      if (existingDish.quantity > 1) {
+        const updatedCart = cartItems.map((item) => {
+          if (item.id === dishId) {
+            return { ...item, quantity: item.quantity - 1 };
+          }
+          return item;
+        });
+        setCartItems(updatedCart);
+      } else {
+        const updatedCart = cartItems.filter((dish) => dish.id !== dishId);
+        setCartItems(updatedCart);
+      }
+    }
   };
 
   const menuData = [
@@ -110,7 +121,7 @@ const MenuScreen = ({ navigation }) => {
       category: 'Main Course',
       quantity: 0, // Add quantity property
     },
-    
+
     {
       id: 9,
       name: 'Pepperoni Pizza',
@@ -239,34 +250,35 @@ const MenuScreen = ({ navigation }) => {
         addToOrder={addToOrder}
         updateQuantity={updateQuantity}
         removeFromOrder={removeFromOrder}
+        cartItems={cartItems}
       />
     ));
   };
   return (
     <View style={{ flex: 1 }}>
-    <ScrollView>
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Starters</Text>
-        {renderDishesByCategory('Starter')}
-      </View>
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Main Courses</Text>
-        {renderDishesByCategory('Main Course')}
-      </View>
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Desserts</Text>
-        {renderDishesByCategory('Dessert')}
-      </View>
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Drinks</Text>
-        {renderDishesByCategory('Drink')}
-      </View>
-    </ScrollView>
-    <Button
-      title={`View Cart (${cartItems.length})`}
-      onPress={() => navigation.navigate('Order Confirmation', { order: cartItems })}
-    />
-  </View>
+      <ScrollView>
+        <View>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Starters</Text>
+          {renderDishesByCategory('Starter')}
+        </View>
+        <View>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Main Courses</Text>
+          {renderDishesByCategory('Main Course')}
+        </View>
+        <View>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Desserts</Text>
+          {renderDishesByCategory('Dessert')}
+        </View>
+        <View>
+          <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>Drinks</Text>
+          {renderDishesByCategory('Drink')}
+        </View>
+      </ScrollView>
+      <Button
+        title={`View Cart (${cartItems.length})`}
+        onPress={() => navigation.navigate('Order Confirmation', { order: cartItems })}
+      />
+    </View>
   );
 };
 
