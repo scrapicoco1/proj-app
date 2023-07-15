@@ -55,6 +55,7 @@ const RegisterScreen = ({ navigation }) => {
       else
         alert(result.data ? result.data.message : 'Something went wrong')
     } catch (error) {
+      alert('Something went wrong')
       console.log(error)
     }
   };
