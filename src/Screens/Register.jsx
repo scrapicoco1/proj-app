@@ -1,35 +1,62 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { View, Text, TextInput, Button, StyleSheet, Image, ScrollView } from 'react-native';
+import { SERVER_BASE_URL } from './../Config/constants';
 
 const RegisterScreen = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [visaDetails, setVisaDetails] = useState('');
-  const [cardNumber, setCardNumber] = useState('');
-  const [idCard, setIdCard] = useState('');
-  const [cardHolderName, setCardHolderName] = useState('');
-  const [expiryDate, setExpiryDate] = useState('');
-  const [cvv, setCvv] = useState('');
+  const [form, setForm] = useState({
+    data: {
+      email: '',
+      password: '',
+      confirmPassword: '',
+      visaDetails: '',
+      cardNumber: '',
+      idCard: '',
+      cardHolderName: '',
+      expiryDate: '',
+      cvv: ''
+    }
+  });
 
-  const handleRegister = () => {
-    if (!email || !password || !confirmPassword || !visaDetails || !cardNumber || !idCard || !cardHolderName || !expiryDate || !cvv) {
-        // If any of the required fields are empty, show an error message
-        console.log('Please fill in all the required details.');
-        return;
+  const handleFormInput = (field, value) => {
+    setForm(f => ({
+      ...f, data: {
+        ...f.data,
+        [field]: value
       }
+    }));
+  }
+
+  const handleRegister = async () => {
+    if (!form.data.email || !form.data.password || !form.data.confirmPassword || !form.data.visaDetails || !form.data.cardNumber || !form.data.idCard || !form.data.cardHolderName || !form.data.expiryDate || !form.data.cvv) {
+      // If any of the required fields are empty, show an error message
+      return alert('Please fill in all the required details');
+    }
+
+    // check if valid email format 
+    if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.data.email)))
+      return alert('Please enter a valid email address')
+
+    // check if passowrd and current password matches
+    if (form.data.password != form.data.confirmPassword)
+      return alert('Password and Confirm Password should match')
+
     // Handle register logic here
-    console.log('Registering...');
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('Confirm Password:', confirmPassword);
-    console.log('Card Number:', cardNumber);
-    console.log('ID Card:', idCard);
-    console.log('Card Holder Name:', cardHolderName);
-    console.log('Expiry Date:', expiryDate);
-    console.log('CVV:', cvv);
-    // Navigate to the appropriate screen
-    navigation.navigate('Menu');
+    try {
+      const result = await axios.post(`${SERVER_BASE_URL}api/user/register`, {
+        ...form.data
+      })
+      if (result.data && result.data.acknowledged)
+      {
+        alert('Registered successfully! 🎉\nLogin now')
+        // Navigate to the appropriate screen
+        navigation.navigate('Login');
+      }
+      else
+        alert(result.data ? result.data.message : 'Something went wrong')
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const handleDownloadCredit = () => {
@@ -47,58 +74,64 @@ const RegisterScreen = ({ navigation }) => {
         <TextInput
           style={styles.input}
           placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
+          keyboardType='email-address'
+          value={form.data.email}
+          onChangeText={(v) => handleFormInput('email', v)}
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
           secureTextEntry
-          value={password}
-          onChangeText={setPassword}
+          value={form.data.password}
+          onChangeText={(v) => handleFormInput('password', v)}
         />
         <TextInput
           style={styles.input}
           placeholder="Confirm Password"
           secureTextEntry
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
+          value={form.data.confirmPassword}
+          onChangeText={(v) => handleFormInput('confirmPassword', v)}
         />
         <TextInput
           style={styles.input}
           placeholder="Visa Details"
-          value={visaDetails}
-          onChangeText={setVisaDetails}
+          value={form.data.visaDetails}
+          onChangeText={(v) => handleFormInput('visaDetails', v)}
         />
         <TextInput
           style={styles.input}
           placeholder="Card Number"
-          value={cardNumber}
-          onChangeText={setCardNumber}
+          keyboardType='number-pad'
+          value={form.data.cardNumber}
+          onChangeText={(v) => handleFormInput('cardNumber', v)}
         />
         <TextInput
           style={styles.input}
           placeholder="ID Card"
-          value={idCard}
-          onChangeText={setIdCard}
+          value={form.data.idCard}
+          onChangeText={(v) => handleFormInput('idCard', v)}
         />
         <TextInput
           style={styles.input}
           placeholder="Card Holder Name"
-          value={cardHolderName}
-          onChangeText={setCardHolderName}
+          value={form.data.cardHolderName}
+          onChangeText={(v) => handleFormInput('cardHolderName', v)}
         />
         <TextInput
           style={styles.input}
           placeholder="Expiry Date"
-          value={expiryDate}
-          onChangeText={setExpiryDate}
+          keyboardType='numbers-and-punctuation'
+          value={form.data.expiryDate}
+          onChangeText={(v) => handleFormInput('expiryDate', v)}
         />
         <TextInput
           style={styles.input}
           placeholder="CVV"
-          value={cvv}
-          onChangeText={setCvv}
+          value={form.data.cvv}
+          maxLength={4}
+          secureTextEntry
+          keyboardType='number-pad'
+          onChangeText={(v) => handleFormInput('cvv', v)}
         />
       </View>
       <Button title="Register" onPress={handleRegister} />

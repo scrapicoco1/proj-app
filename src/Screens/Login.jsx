@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Image, StyleSheet } from 'react-native';
+import { View, TextInput, Button, Image, StyleSheet, Text } from 'react-native';
 
 const LoginRegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -16,11 +16,6 @@ const LoginRegisterScreen = ({ navigation }) => {
   };
 
   const handleRegister = () => {
-    if (!isValidEmail) {
-      return;
-    }
-    // Handle register logic here
-    console.log(`Registering with email: ${email} and password: ${password}`);
     navigation.navigate('Register');
   };
 
@@ -59,12 +54,16 @@ const LoginRegisterScreen = ({ navigation }) => {
         disabled={!isFormValid} // Disable the button if the form is not valid
         color="#007AFF" // Replace with your desired color
       />
-      <Button
-        title="Register"
-        onPress={handleRegister}
-        disabled={!isFormValid} // Disable the button if the form is not valid
-        color="#007AFF" // Replace with your desired color
-      />
+      <View style={styles.registerView}>
+        <Text style={styles.text}>
+          Don't have an account?
+        </Text>
+        <Button
+          title="Register Here"
+          onPress={handleRegister}
+          color="#007AFF" // Replace with your desired color
+        />
+      </View>
     </View>
   );
 };
@@ -94,6 +93,13 @@ const styles = StyleSheet.create({
   invalidInput: {
     borderColor: 'red',
   },
+  registerView: {
+    marginTop: 30
+  },
+  text: {
+    alignSelf: 'center'
+  }
+
 });
 
 export default LoginRegisterScreen;
