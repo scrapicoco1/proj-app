@@ -1,18 +1,33 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { View, TextInput, Button, Image, StyleSheet, Text } from 'react-native';
+import { SERVER_BASE_URL } from './../Config/constants';
 
 const LoginRegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!isValidEmail) {
       return;
     }
     // Handle login logic here
+    try {
+      const result = await axios.post(`${SERVER_BASE_URL}api/user/login`, {
+        email, password
+      })
+      if (result.data && result.data.acknowledged) {
+        // Navigate to the appropriate screen
+        navigation.navigate('Menu');
+      }
+      else
+        alert(result.data ? result.data.message : 'Something went wrong')
+    } catch (error) {
+      let msg = error && error.response && error.response.data && error.response.data.msg ? error.response.data.msg : 'Something went wrong';
+      alert(msg)
+    }
     console.log(`Logging in with email: ${email} and password: ${password}`);
-    navigation.navigate('Menu');
   };
 
   const handleRegister = () => {
