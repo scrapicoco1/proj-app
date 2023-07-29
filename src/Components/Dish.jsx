@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { View, Text, Image, StyleSheet, Button, Pressable } from 'react-native';
+import { SERVER_BASE_URL } from './../Config/constants';
 
 const Dish = ({ dish, addToOrder, removeFromOrder, cartItems }) => {
 
@@ -9,7 +10,7 @@ const Dish = ({ dish, addToOrder, removeFromOrder, cartItems }) => {
 
   return (
     <View style={styles.container}>
-      <Image source={dish.image} style={styles.image} resizeMode="cover" />
+      <Image src={`${SERVER_BASE_URL}${dish.image}`} style={styles.image} resizeMode="cover" />
       <View style={styles.detailsContainer}>
         <Text style={styles.name}>{dish.name}</Text>
         <Text style={styles.description}>{dish.description}</Text>
