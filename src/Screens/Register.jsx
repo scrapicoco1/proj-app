@@ -9,7 +9,7 @@ const RegisterScreen = ({ navigation }) => {
       email: '',
       password: '',
       confirmPassword: '',
-      visaDetails: '',
+     
       cardNumber: '',
       idCard: '',
       cardHolderName: '',
@@ -28,7 +28,7 @@ const RegisterScreen = ({ navigation }) => {
   }
 
   const handleRegister = async () => {
-    if (!form.data.email || !form.data.password || !form.data.confirmPassword || !form.data.visaDetails || !form.data.cardNumber || !form.data.idCard || !form.data.cardHolderName || !form.data.expiryDate || !form.data.cvv) {
+    if (!form.data.email || !form.data.password || !form.data.confirmPassword || !form.data.cardNumber || !form.data.idCard || !form.data.cardHolderName || !form.data.expiryDate || !form.data.cvv) {
       // If any of the required fields are empty, show an error message
       return alert('Please fill in all the required details');
     }
@@ -93,12 +93,7 @@ const RegisterScreen = ({ navigation }) => {
           value={form.data.confirmPassword}
           onChangeText={(v) => handleFormInput('confirmPassword', v)}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Visa Details"
-          value={form.data.visaDetails}
-          onChangeText={(v) => handleFormInput('visaDetails', v)}
-        />
+        
         <TextInput
           style={styles.input}
           placeholder="Card Number"
