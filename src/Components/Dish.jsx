@@ -5,7 +5,7 @@ import { SERVER_BASE_URL } from './../Config/constants';
 const Dish = ({ dish, addToOrder, removeFromOrder, cartItems }) => {
 
   const existingItem = useMemo(() => {
-    return cartItems.find((item) => item.id === dish.id);
+    return cartItems.find((item) => item._id === dish._id);
   }, [cartItems]);
 
   return (
@@ -18,7 +18,7 @@ const Dish = ({ dish, addToOrder, removeFromOrder, cartItems }) => {
         {!existingItem ? <Button title={`Add to cart`} onPress={() => addToOrder(dish)} /> : <View style={styles.quantity}>
           <Text style={styles.quantityText}>Qty:</Text>
           <View style={styles.quantityBtnPanel}>
-            <Pressable style={styles.quantityBtn} onPress={() => removeFromOrder(dish.id)}>
+            <Pressable style={styles.quantityBtn} onPress={() => removeFromOrder(dish._id)}>
               <Text style={styles.quantityBtntext}>{'-'}</Text>
             </Pressable>
             <Text style={styles.quantityText}>{`${existingItem.quantity}`}</Text>

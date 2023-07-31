@@ -8,10 +8,10 @@ const MenuScreen = ({ navigation }) => {
   const [cartItems, setCartItems] = useState([]);
   const [menuData, setMenuData] = useState([]);
   const addToOrder = (dish) => {
-    const existingDish = cartItems.find((item) => item.id === dish.id);
+    const existingDish = cartItems.find((item) => item._id === dish._id);
     if (existingDish) {
       const updatedCart = cartItems.map((item) => {
-        if (item.id === dish.id) {
+        if (item._id === dish._id) {
           return { ...item, quantity: item.quantity + 1 };
         }
         return item;
@@ -25,7 +25,7 @@ const MenuScreen = ({ navigation }) => {
 
   const updateQuantity = (dishId, quantity) => {
     const updatedOrder = cartItems.map((dish) => {
-      if (dish.id === dishId) {
+      if (dish._id === dishId) {
         return { ...dish, quantity };
       }
       return dish;
@@ -34,18 +34,18 @@ const MenuScreen = ({ navigation }) => {
   };
 
   const removeFromOrder = (dishId) => {
-    const existingDish = cartItems.find((item) => item.id === dishId);
+    const existingDish = cartItems.find((item) => item._id === dishId);
     if (existingDish) {
       if (existingDish.quantity > 1) {
         const updatedCart = cartItems.map((item) => {
-          if (item.id === dishId) {
+          if (item._id === dishId) {
             return { ...item, quantity: item.quantity - 1 };
           }
           return item;
         });
         setCartItems(updatedCart);
       } else {
-        const updatedCart = cartItems.filter((dish) => dish.id !== dishId);
+        const updatedCart = cartItems.filter((dish) => dish._id !== dishId);
         setCartItems(updatedCart);
       }
     }
@@ -62,9 +62,9 @@ const MenuScreen = ({ navigation }) => {
 
   const renderDishesByCategory = (category) => {
     const dishes = menuData.filter((dish) => dish.category === category);
-    return dishes.map((dish) => (
+    return dishes.map((dish,ind) => (
       <Dish
-        key={dish.id}
+        key={`dish_${ind}`}
         dish={dish}
         addToOrder={addToOrder}
         updateQuantity={updateQuantity}

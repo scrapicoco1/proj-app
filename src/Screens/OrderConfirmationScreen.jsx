@@ -16,8 +16,8 @@ const OrderConfirmationScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Order Confirmation Screen</Text>
-      {order.map(dish => (
-        <View key={dish.id} style={styles.dishContainer}>
+      {order.map((dish,ind) => (
+        <View key={`order_${ind}`} style={styles.dishContainer}>
           <Text style={styles.dishName}>{dish.name}</Text>
           <Text style={styles.dishDescription}>{dish.description}</Text>
           <Text style={styles.dishPrice}>{dish.price * dish.quantity} (Qty: {dish.quantity} X {dish.price})</Text>

@@ -16,8 +16,8 @@ const PaymentScreen = ({ navigation, route }) => {
       <Text style={styles.title}>Payment Confirmation</Text>
 
       <Text style={styles.sectionTitle}>Selected Products:</Text>
-      {selectedProducts.map((product) => (
-        <Text key={product.id} style={styles.productItem}>
+      {selectedProducts.map((product, ind) => (
+        <Text key={`prd_${ind}`} style={styles.productItem}>
           {product.name} - ${product.price.toFixed(2)}
         </Text>
       ))}
