@@ -10,7 +10,7 @@ const Dish = ({ dish, addToOrder, removeFromOrder, cartItems }) => {
 
   return (
     <View style={styles.container}>
-      <Image src={`${SERVER_BASE_URL}${dish.image}`} style={styles.image} resizeMode="cover" />
+      <Image source={{uri:`${SERVER_BASE_URL}admin/${dish.image}`}} style={styles.image} resizeMode="cover" />
       <View style={styles.detailsContainer}>
         <Text style={styles.name}>{dish.name}</Text>
         <Text style={styles.description}>{dish.description}</Text>

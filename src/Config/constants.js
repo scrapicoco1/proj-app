@@ -1,1 +1,1 @@
-export const SERVER_BASE_URL = 'http://localhost:5500/';
+export const SERVER_BASE_URL = 'https://split-server-qlei.onrender.com/';
