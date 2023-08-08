@@ -23,10 +23,10 @@ const OrderConfirmationScreen = ({ route, navigation }) => {
           <Text style={styles.dishPrice}>{dish.price * dish.quantity} (Qty: {dish.quantity} X {dish.price})</Text>
         </View>
       ))}
-      <Text style={styles.total}>Total: {calculateTotal()}</Text>
+      <Text style={styles.total}>Total: {Math.round(calculateTotal())}</Text>
       <Button
         title="Confirm Order"
-        onPress={() => navigation.navigate('Payment')}
+        onPress={() => navigation.navigate('Feedback')}
         style={styles.button}
       />
     </View>
